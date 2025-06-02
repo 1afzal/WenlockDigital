@@ -118,7 +118,17 @@ export function registerRoutes(app: Express): Server {
   // Patients
   app.get("/api/patients", async (req, res) => {
     try {
-      if (!req.isAuthenticated() || !['admin', 'doctor', 'nurse'].includes(req.user?.role || '')) {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+      
+      // Allow patients to see their own data, others need admin/doctor/nurse role
+      if (req.user?.role === 'patient') {
+        const patient = await storage.getPatientByUserId(req.user.id);
+        return res.json(patient ? [patient] : []);
+      }
+      
+      if (!['admin', 'doctor', 'nurse'].includes(req.user?.role || '')) {
         return res.status(403).json({ message: "Access denied" });
       }
       
@@ -323,7 +333,7 @@ export function registerRoutes(app: Express): Server {
 
   app.get("/api/prescriptions/pending", async (req, res) => {
     try {
-      if (!req.isAuthenticated() || req.user?.role !== 'pharmacy') {
+      if (!req.isAuthenticated() || !['pharmacy', 'admin'].includes(req.user?.role || '')) {
         return res.status(403).json({ message: "Access denied" });
       }
       
@@ -511,6 +521,44 @@ export function registerRoutes(app: Express): Server {
       res.json(surgery);
     } catch (error) {
       res.status(400).json({ message: "Failed to update surgery" });
+    }
+  });
+
+  // Patient-specific endpoints
+  app.get("/api/patients/my-appointments", async (req, res) => {
+    try {
+      if (!req.isAuthenticated() || req.user?.role !== 'patient') {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      const patient = await storage.getPatientByUserId(req.user.id);
+      if (!patient) {
+        return res.status(404).json({ message: "Patient profile not found" });
+      }
+      
+      const appointments = await storage.getAppointmentsByPatient(patient.id);
+      res.json(appointments);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch patient appointments" });
+    }
+  });
+
+  app.get("/api/patients/my-prescriptions", async (req, res) => {
+    try {
+      if (!req.isAuthenticated() || req.user?.role !== 'patient') {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      const patient = await storage.getPatientByUserId(req.user.id);
+      if (!patient) {
+        return res.status(404).json({ message: "Patient profile not found" });
+      }
+      
+      const prescriptions = await storage.getPrescriptions();
+      const patientPrescriptions = prescriptions.filter(p => p.patient?.id === patient.id);
+      res.json(patientPrescriptions);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch patient prescriptions" });
     }
   });
 

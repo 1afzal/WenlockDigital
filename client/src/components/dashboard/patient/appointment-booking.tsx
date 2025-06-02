@@ -47,10 +47,12 @@ export function AppointmentBooking() {
     queryKey: ["/api/doctors"],
   });
 
-  const { data: patient } = useQuery({
+  const { data: patients = [] } = useQuery({
     queryKey: ["/api/patients"],
-    select: (patients: any[]) => patients.find(p => p.userId === user?.id)
+    enabled: !!user && user.role === 'patient'
   });
+
+  const patient = patients.find((p: any) => p.userId === user?.id);
 
   const form = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentSchema),

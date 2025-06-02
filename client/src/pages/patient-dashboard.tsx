@@ -10,25 +10,18 @@ import { Calendar, Clock, FileText, User } from "lucide-react";
 export default function PatientDashboard() {
   const { user } = useAuth();
   
-  const { data: appointments = [] } = useQuery({
-    queryKey: ["/api/appointments"],
+  const { data: patientAppointments = [] } = useQuery({
+    queryKey: ["/api/patients/my-appointments"],
+    enabled: !!user && user.role === 'patient'
   });
 
-  const { data: prescriptions = [] } = useQuery({
-    queryKey: ["/api/prescriptions"],
+  const { data: patientPrescriptions = [] } = useQuery({
+    queryKey: ["/api/patients/my-prescriptions"],
+    enabled: !!user && user.role === 'patient'
   });
-
-  // Filter patient's data
-  const patientAppointments = appointments.filter((apt: any) => 
-    apt.patient?.userId === user?.id
-  );
 
   const upcomingAppointments = patientAppointments.filter((apt: any) => 
     new Date(apt.appointmentDate) > new Date() && apt.status !== 'cancelled'
-  );
-
-  const patientPrescriptions = prescriptions.filter((pres: any) => 
-    pres.patient?.userId === user?.id
   );
 
   const pendingPrescriptions = patientPrescriptions.filter((pres: any) => 
