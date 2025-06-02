@@ -31,50 +31,69 @@ export async function initializeHospitalData() {
       description: 'Children healthcare'
     });
 
+    // Create sample doctor users and profiles for each department
+    const doctors = [
+      {
+        username: 'dr.smith',
+        fullName: 'Dr. John Smith',
+        email: 'dr.smith@wenlock.hospital',
+        specialization: 'Cardiologist',
+        departmentId: cardiology.id,
+        licenseNumber: 'DOC001'
+      },
+      {
+        username: 'dr.jones',
+        fullName: 'Dr. Sarah Jones', 
+        email: 'dr.jones@wenlock.hospital',
+        specialization: 'Emergency Medicine',
+        departmentId: emergency.id,
+        licenseNumber: 'DOC002'
+      },
+      {
+        username: 'dr.brown',
+        fullName: 'Dr. Michael Brown',
+        email: 'dr.brown@wenlock.hospital',
+        specialization: 'Orthopedic Surgeon',
+        departmentId: orthopedics.id,
+        licenseNumber: 'DOC003'
+      },
+      {
+        username: 'dr.davis',
+        fullName: 'Dr. Emily Davis',
+        email: 'dr.davis@wenlock.hospital',
+        specialization: 'Pediatrician',
+        departmentId: pediatrics.id,
+        licenseNumber: 'DOC004'
+      }
+    ];
+
+    for (const doctorData of doctors) {
+      const doctorUser = await storage.createUser({
+        username: doctorData.username,
+        password: '$2a$10$hash', // Will be properly hashed if user logs in
+        role: 'doctor',
+        fullName: doctorData.fullName,
+        email: doctorData.email,
+        phone: '+1234567890'
+      });
+
+      await storage.createDoctor({
+        userId: doctorUser.id,
+        departmentId: doctorData.departmentId,
+        specialization: doctorData.specialization,
+        licenseNumber: doctorData.licenseNumber,
+        type: 'specialist'
+      });
+    }
+
     // Create sample admin user
     const adminUser = await storage.createUser({
       username: 'admin',
-      password: '$2a$10$hash', // Will be properly hashed in auth
+      password: '$2a$10$hash',
       role: 'admin',
       fullName: 'Hospital Administrator',
       email: 'admin@wenlock.hospital',
       phone: '+1234567890'
-    });
-
-    // Create sample doctor users
-    const doctorUser1 = await storage.createUser({
-      username: 'dr.smith',
-      password: '$2a$10$hash',
-      role: 'doctor',
-      fullName: 'Dr. John Smith',
-      email: 'dr.smith@wenlock.hospital',
-      phone: '+1234567891'
-    });
-
-    const doctorUser2 = await storage.createUser({
-      username: 'dr.jones',
-      password: '$2a$10$hash',
-      role: 'doctor',
-      fullName: 'Dr. Sarah Jones',
-      email: 'dr.jones@wenlock.hospital',
-      phone: '+1234567892'
-    });
-
-    // Create doctor profiles
-    await storage.createDoctor({
-      userId: doctorUser1.id,
-      departmentId: cardiology.id,
-      specialization: 'Cardiologist',
-      licenseNumber: 'DOC001',
-      type: 'specialist'
-    });
-
-    await storage.createDoctor({
-      userId: doctorUser2.id,
-      departmentId: emergency.id,
-      specialization: 'Emergency Medicine',
-      licenseNumber: 'DOC002',
-      type: 'emergency'
     });
 
     // Create nurse user
