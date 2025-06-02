@@ -157,16 +157,14 @@ export function Sidebar() {
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
               Overview
             </h3>
-            <Link href={`/${user.role}`}>
-              <a className={cn(
-                "flex items-center px-3 py-2 rounded-lg font-medium transition-colors",
-                isActive("/") 
-                  ? "text-medical-blue bg-blue-50" 
-                  : "text-gray-700 hover:bg-gray-100"
-              )}>
-                <LayoutDashboard className="w-5 h-5 mr-3" />
-                Dashboard
-              </a>
+            <Link href={`/${user.role}`} className={cn(
+              "flex items-center px-3 py-2 rounded-lg font-medium transition-colors",
+              isActive("/") 
+                ? "text-medical-blue bg-blue-50" 
+                : "text-gray-700 hover:bg-gray-100"
+            )}>
+              <LayoutDashboard className="w-5 h-5 mr-3" />
+              Dashboard
             </Link>
           </div>
 
@@ -178,38 +176,32 @@ export function Sidebar() {
                   Patient Management
                 </h3>
                 <div className="space-y-1">
-                  <Link href="/patients">
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive("/patients") 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <Users className="w-5 h-5 mr-3" />
-                      Patient Registry
-                    </a>
+                  <Link href="/patients" className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive("/patients") 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <Users className="w-5 h-5 mr-3" />
+                    Patient Registry
                   </Link>
-                  <Link href="/appointments">
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive("/appointments") 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <Calendar className="w-5 h-5 mr-3" />
-                      Appointments
-                    </a>
+                  <Link href="/appointments" className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive("/appointments") 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <Calendar className="w-5 h-5 mr-3" />
+                    Appointments
                   </Link>
-                  <Link href="/tokens">
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive("/tokens") 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <Ticket className="w-5 h-5 mr-3" />
-                      Token Management
-                    </a>
+                  <Link href="/tokens" className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive("/tokens") 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <Ticket className="w-5 h-5 mr-3" />
+                    Token Management
                   </Link>
                 </div>
               </div>
@@ -219,38 +211,32 @@ export function Sidebar() {
                   Staff Management
                 </h3>
                 <div className="space-y-1">
-                  <Link href="/doctors">
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive("/doctors") 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <Stethoscope className="w-5 h-5 mr-3" />
-                      Doctors
-                    </a>
+                  <Link href="/doctors" className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive("/doctors") 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <Stethoscope className="w-5 h-5 mr-3" />
+                    Doctors
                   </Link>
-                  <Link href="/nurses">
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive("/nurses") 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <UserCheck className="w-5 h-5 mr-3" />
-                      Nurses
-                    </a>
+                  <Link href="/nurses" className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive("/nurses") 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <UserCheck className="w-5 h-5 mr-3" />
+                    Nurses
                   </Link>
-                  <Link href="/pharmacy-staff">
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive("/pharmacy-staff") 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <Pill className="w-5 h-5 mr-3" />
-                      Pharmacy Staff
-                    </a>
+                  <Link href="/pharmacy-staff" className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive("/pharmacy-staff") 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <Pill className="w-5 h-5 mr-3" />
+                    Pharmacy Staff
                   </Link>
                 </div>
               </div>
@@ -265,16 +251,14 @@ export function Sidebar() {
               </h3>
               <div className="space-y-1">
                 {departmentItems.map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    <a className={cn(
-                      "flex items-center px-3 py-2 rounded-lg transition-colors",
-                      isActive(item.href) 
-                        ? "text-medical-blue bg-blue-50" 
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}>
-                      <item.icon className="w-5 h-5 mr-3" />
-                      {item.title}
-                    </a>
+                  <Link key={item.href} href={item.href} className={cn(
+                    "flex items-center px-3 py-2 rounded-lg transition-colors",
+                    isActive(item.href) 
+                      ? "text-medical-blue bg-blue-50" 
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}>
+                    <item.icon className="w-5 h-5 mr-3" />
+                    {item.title}
                   </Link>
                 ))}
               </div>
@@ -288,16 +272,14 @@ export function Sidebar() {
                 Medical
               </h3>
               <div className="space-y-1">
-                <Link href="/prescriptions">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/prescriptions") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <FileText className="w-5 h-5 mr-3" />
-                    Prescriptions
-                  </a>
+                <Link href="/prescriptions" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/prescriptions") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <FileText className="w-5 h-5 mr-3" />
+                  Prescriptions
                 </Link>
               </div>
             </div>
