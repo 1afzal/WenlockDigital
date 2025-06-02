@@ -69,6 +69,49 @@ export function setupAuth(app: Express) {
       password: await hashPassword(req.body.password),
     });
 
+    // Create role-specific profiles
+    try {
+      if (user.role === 'patient') {
+        await storage.createPatient({
+          userId: user.id,
+          emergencyContact: '',
+          bloodGroup: 'O+',
+          allergies: ''
+        });
+      } else if (user.role === 'doctor') {
+        // Get first department or create one if none exists
+        const departments = await storage.getDepartments();
+        const defaultDept = departments.length > 0 ? departments[0] : 
+          await storage.createDepartment({ name: 'General Medicine', description: 'General medical care' });
+        
+        await storage.createDoctor({
+          userId: user.id,
+          departmentId: defaultDept.id,
+          specialization: 'General Medicine',
+          licenseNumber: `DOC-${user.id}`,
+          type: 'specialist'
+        });
+      } else if (user.role === 'nurse') {
+        const departments = await storage.getDepartments();
+        const defaultDept = departments.length > 0 ? departments[0] : 
+          await storage.createDepartment({ name: 'General Medicine', description: 'General medical care' });
+        
+        await storage.createNurse({
+          userId: user.id,
+          departmentId: defaultDept.id,
+          shift: 'day'
+        });
+      } else if (user.role === 'pharmacy') {
+        await storage.createPharmacyStaff({
+          userId: user.id,
+          position: 'pharmacist'
+        });
+      }
+    } catch (profileError) {
+      console.error('Error creating user profile:', profileError);
+      // Continue with login even if profile creation fails
+    }
+
     req.login(user, (err) => {
       if (err) return next(err);
       res.status(201).json(user);

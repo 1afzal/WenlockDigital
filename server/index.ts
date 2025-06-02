@@ -37,6 +37,14 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Initialize sample data first
+  try {
+    const { initializeHospitalData } = await import('./sample-data');
+    await initializeHospitalData();
+  } catch (error) {
+    console.log('Sample data initialization skipped:', error.message);
+  }
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

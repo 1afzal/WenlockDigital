@@ -219,7 +219,9 @@ export class MemStorage implements IStorage {
       ...insertUser, 
       id,
       isActive: insertUser.isActive ?? true,
-      createdAt: new Date()
+      createdAt: new Date(),
+      email: insertUser.email ?? null,
+      phone: insertUser.phone ?? null
     };
     this.users.set(id, user);
     return user;
