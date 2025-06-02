@@ -291,27 +291,23 @@ export function Sidebar() {
                 Pharmacy
               </h3>
               <div className="space-y-1">
-                <Link href="/prescriptions">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/prescriptions") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <FileText className="w-5 h-5 mr-3" />
-                    Prescriptions
-                  </a>
+                <Link href="/prescriptions" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/prescriptions") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <FileText className="w-5 h-5 mr-3" />
+                  Prescriptions
                 </Link>
-                <Link href="/inventory">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/inventory") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <Package className="w-5 h-5 mr-3" />
-                    Drug Inventory
-                  </a>
+                <Link href="/inventory" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/inventory") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <Package className="w-5 h-5 mr-3" />
+                  Drug Inventory
                 </Link>
               </div>
             </div>
@@ -323,27 +319,23 @@ export function Sidebar() {
                 My Health
               </h3>
               <div className="space-y-1">
-                <Link href="/my-appointments">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/my-appointments") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <Calendar className="w-5 h-5 mr-3" />
-                    My Appointments
-                  </a>
+                <Link href="/my-appointments" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/my-appointments") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <Calendar className="w-5 h-5 mr-3" />
+                  My Appointments
                 </Link>
-                <Link href="/my-prescriptions">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/my-prescriptions") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <FileText className="w-5 h-5 mr-3" />
-                    My Prescriptions
-                  </a>
+                <Link href="/my-prescriptions" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/my-prescriptions") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <FileText className="w-5 h-5 mr-3" />
+                  My Prescriptions
                 </Link>
               </div>
             </div>
@@ -356,27 +348,23 @@ export function Sidebar() {
                 System
               </h3>
               <div className="space-y-1">
-                <Link href="/settings">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/settings") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <Settings className="w-5 h-5 mr-3" />
-                    Settings
-                  </a>
+                <Link href="/settings" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/settings") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <Settings className="w-5 h-5 mr-3" />
+                  Settings
                 </Link>
-                <Link href="/audit">
-                  <a className={cn(
-                    "flex items-center px-3 py-2 rounded-lg transition-colors",
-                    isActive("/audit") 
-                      ? "text-medical-blue bg-blue-50" 
-                      : "text-gray-700 hover:bg-gray-100"
-                  )}>
-                    <ClipboardList className="w-5 h-5 mr-3" />
-                    Audit Logs
-                  </a>
+                <Link href="/audit" className={cn(
+                  "flex items-center px-3 py-2 rounded-lg transition-colors",
+                  isActive("/audit") 
+                    ? "text-medical-blue bg-blue-50" 
+                    : "text-gray-700 hover:bg-gray-100"
+                )}>
+                  <ClipboardList className="w-5 h-5 mr-3" />
+                  Audit Logs
                 </Link>
               </div>
             </div>

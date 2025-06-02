@@ -1,9 +1,9 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/use-auth";
+import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
@@ -14,6 +14,36 @@ import PatientDashboard from "@/pages/patient-dashboard";
 import PharmacyDashboard from "@/pages/pharmacy-dashboard";
 
 function RoleBasedDashboard() {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  if (!user) {
+    return <Redirect to="/auth" />;
+  }
+
+  // Role-based dashboard component selection
+  const getDashboardComponent = () => {
+    switch (user.role) {
+      case 'admin':
+        return AdminDashboard;
+      case 'doctor':
+        return DoctorDashboard;
+      case 'nurse':
+        return NurseDashboard;
+      case 'patient':
+        return PatientDashboard;
+      case 'pharmacy':
+        return PharmacyDashboard;
+      default:
+        return AdminDashboard;
+    }
+  };
+
+  const DashboardComponent = getDashboardComponent();
+
   return (
     <Switch>
       <ProtectedRoute path="/admin" component={AdminDashboard} />
@@ -21,7 +51,9 @@ function RoleBasedDashboard() {
       <ProtectedRoute path="/nurse" component={NurseDashboard} />
       <ProtectedRoute path="/patient" component={PatientDashboard} />
       <ProtectedRoute path="/pharmacy" component={PharmacyDashboard} />
-      <ProtectedRoute path="/" component={AdminDashboard} />
+      <Route path="/">
+        <DashboardComponent />
+      </Route>
     </Switch>
   );
 }
