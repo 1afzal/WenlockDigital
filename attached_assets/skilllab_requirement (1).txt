@@ -1,0 +1,31 @@
+okay .. lets start with the implementation..
+i have choosen 5 role based users : admin,nurse,patient, pharmacy , doctor....
+Admin functionalities :
+1.add departments ( cardiology,etc..)
+2.add doctors,nurse,pharmacy guy .This means that admin will be registering these guys.While registering
+ admin adds all their details and they will be provided with a registration form only to set their username and
+ password . This credentials will then be used by them to login.
+3.add pharmacy details.
+Think of anything else that admin can do.
+
+Patient functionalities:
+Once he registers and logs in, he will be provided with a dashboard.Think of all the things that he might need.
+One of the things that he needs is that he should be able to book appointment to the specific doctor and get
+the token. 
+
+Doctor functionalities:
+There are 2 types of doctors:consultancy and surgeon.
+For consultancy doctor:
+Once the doctor logs in,he gets a dashboard.Again think of all the that he might need in there.
+One of it is,he should be able to see who has appointment with him and once he consults them,
+he should prescribe medicines and this prescription should then go to the pharamacy guys dashboard.
+
+For surgeon:
+same login process.Design his dashboard (consults first and then proceeds to operate)
+.One of things to include in dashboard is operation schedule and operation theater schedule management.
+
+Pharmacy guy functionalities:
+drug inventory management (think of all the things that he might need to do),
+ drug dispensing based on the prescription sent by the doctor,etc..
+
+
