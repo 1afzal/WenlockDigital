@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 250 5% 98%; /* #FAFAFA surface-gray */
+  --foreground: 222 84% 5%; /* #0f172a slate-900 */
+  --muted: 210 40% 95%; /* #f1f5f9 slate-100 */
+  --muted-foreground: 215 16% 47%; /* #64748b slate-500 */
+  --popover: 0 0% 100%; /* #ffffff */
+  --popover-foreground: 222 84% 5%; /* #0f172a slate-900 */
+  --card: 0 0% 100%; /* #ffffff */
+  --card-foreground: 222 84% 5%; /* #0f172a slate-900 */
+  --border: 214 32% 91%; /* #e2e8f0 slate-200 */
+  --input: 214 32% 91%; /* #e2e8f0 slate-200 */
+  --primary: 207 90% 54%; /* #1976D2 medical-blue */
+  --primary-foreground: 0 0% 100%; /* #ffffff */
+  --secondary: 210 40% 95%; /* #f1f5f9 slate-100 */
+  --secondary-foreground: 222 84% 5%; /* #0f172a slate-900 */
+  --accent: 210 40% 95%; /* #f1f5f9 slate-100 */
+  --accent-foreground: 222 84% 5%; /* #0f172a slate-900 */
+  --destructive: 0 73% 52%; /* #D32F2F emergency-red */
+  --destructive-foreground: 0 0% 100%; /* #ffffff */
+  --ring: 207 90% 54%; /* #1976D2 medical-blue */
+  --radius: 0.5rem;
+  
+  /* Custom Hospital Colors */
+  --medical-blue: 207 90% 54%; /* #1976D2 */
+  --health-green: 130 61% 39%; /* #388E3C */
+  --alert-orange: 35 100% 48%; /* #F57C00 */
+  --emergency-red: 0 73% 52%; /* #D32F2F */
+  --surface-gray: 250 5% 98%; /* #FAFAFA */
+  
+  /* Chart colors */
+  --chart-1: 207 90% 54%; /* medical-blue */
+  --chart-2: 130 61% 39%; /* health-green */
+  --chart-3: 35 100% 48%; /* alert-orange */
+  --chart-4: 0 73% 52%; /* emergency-red */
+  --chart-5: 260 34% 55%; /* purple */
+
+  /* Sidebar colors */
+  --sidebar-background: 0 0% 100%; /* white */
+  --sidebar-foreground: 222 84% 5%; /* slate-900 */
+  --sidebar-primary: 207 90% 54%; /* medical-blue */
+  --sidebar-primary-foreground: 0 0% 100%; /* white */
+  --sidebar-accent: 210 40% 95%; /* slate-100 */
+  --sidebar-accent-foreground: 222 84% 5%; /* slate-900 */
+  --sidebar-border: 214 32% 91%; /* slate-200 */
+  --sidebar-ring: 207 90% 54%; /* medical-blue */
+}
+
+.dark {
+  --background: 222 84% 5%; /* #0f172a slate-900 */
+  --foreground: 210 40% 98%; /* #f8fafc slate-50 */
+  --muted: 217 33% 17%; /* #1e293b slate-800 */
+  --muted-foreground: 215 20% 65%; /* #94a3b8 slate-400 */
+  --popover: 222 84% 5%; /* #0f172a slate-900 */
+  --popover-foreground: 210 40% 98%; /* #f8fafc slate-50 */
+  --card: 222 84% 5%; /* #0f172a slate-900 */
+  --card-foreground: 210 40% 98%; /* #f8fafc slate-50 */
+  --border: 217 33% 17%; /* #1e293b slate-800 */
+  --input: 217 33% 17%; /* #1e293b slate-800 */
+  --primary: 207 90% 54%; /* #1976D2 medical-blue */
+  --primary-foreground: 0 0% 100%; /* #ffffff */
+  --secondary: 217 33% 17%; /* #1e293b slate-800 */
+  --secondary-foreground: 210 40% 98%; /* #f8fafc slate-50 */
+  --accent: 217 33% 17%; /* #1e293b slate-800 */
+  --accent-foreground: 210 40% 98%; /* #f8fafc slate-50 */
+  --destructive: 0 73% 52%; /* #D32F2F emergency-red */
+  --destructive-foreground: 0 0% 100%; /* #ffffff */
+  --ring: 207 90% 54%; /* #1976D2 medical-blue */
+  
+  /* Custom Hospital Colors (same for dark mode) */
+  --medical-blue: 207 90% 54%; /* #1976D2 */
+  --health-green: 130 61% 39%; /* #388E3C */
+  --alert-orange: 35 100% 48%; /* #F57C00 */
+  --emergency-red: 0 73% 52%; /* #D32F2F */
+  --surface-gray: 222 84% 5%; /* #0f172a for dark mode */
+
+  /* Sidebar colors for dark mode */
+  --sidebar-background: 222 84% 5%; /* slate-900 */
+  --sidebar-foreground: 210 40% 98%; /* slate-50 */
+  --sidebar-primary: 207 90% 54%; /* medical-blue */
+  --sidebar-primary-foreground: 0 0% 100%; /* white */
+  --sidebar-accent: 217 33% 17%; /* slate-800 */
+  --sidebar-accent-foreground: 210 40% 98%; /* slate-50 */
+  --sidebar-border: 217 33% 17%; /* slate-800 */
+  --sidebar-ring: 207 90% 54%; /* medical-blue */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/* Custom utility classes for hospital colors */
+@layer utilities {
+  .text-medical-blue {
+    color: hsl(var(--medical-blue));
+  }
+  
+  .text-health-green {
+    color: hsl(var(--health-green));
+  }
+  
+  .text-alert-orange {
+    color: hsl(var(--alert-orange));
+  }
+  
+  .text-emergency-red {
+    color: hsl(var(--emergency-red));
+  }
+  
+  .bg-medical-blue {
+    background-color: hsl(var(--medical-blue));
+  }
+  
+  .bg-health-green {
+    background-color: hsl(var(--health-green));
+  }
+  
+  .bg-alert-orange {
+    background-color: hsl(var(--alert-orange));
+  }
+  
+  .bg-emergency-red {
+    background-color: hsl(var(--emergency-red));
+  }
+  
+  .bg-surface-gray {
+    background-color: hsl(var(--surface-gray));
+  }
+  
+  .border-medical-blue {
+    border-color: hsl(var(--medical-blue));
+  }
+  
+  .border-health-green {
+    border-color: hsl(var(--health-green));
+  }
+  
+  .border-alert-orange {
+    border-color: hsl(var(--alert-orange));
+  }
+  
+  .border-emergency-red {
+    border-color: hsl(var(--emergency-red));
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: hsl(207 90% 45%);
+  }
+  
+  .hover\:bg-green-700:hover {
+    background-color: hsl(130 61% 30%);
+  }
+  
+  .hover\:bg-orange-700:hover {
+    background-color: hsl(35 100% 40%);
+  }
+  
+  .hover\:bg-red-700:hover {
+    background-color: hsl(0 73% 42%);
+  }
+}
