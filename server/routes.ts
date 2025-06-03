@@ -354,11 +354,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Create corresponding token
       const tokenNumber = req.body.tokenNumber || `${req.body.departmentCode || 'T'}-${Date.now().toString().slice(-4)}`;
-      await storage.createToken({
+      const token = await storage.createToken({
         appointmentId: appointment.id,
         tokenNumber,
         departmentId: appointment.departmentId,
         status: 'waiting'
+      });
+      
+      // Send real-time notifications to all connected clients
+      wss.clients.forEach((client: WebSocket) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({
+            type: 'appointment_created',
+            data: {
+              appointment,
+              token,
+              tokenNumber
+            },
+            timestamp: new Date().toISOString()
+          }));
+        }
+      });
+      
+      // Also send token update notification
+      wss.clients.forEach((client: WebSocket) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({
+            type: 'token_created',
+            data: token,
+            timestamp: new Date().toISOString()
+          }));
+        }
       });
       
       res.status(201).json(appointment);

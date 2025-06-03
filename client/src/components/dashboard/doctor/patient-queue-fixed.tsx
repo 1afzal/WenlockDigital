@@ -4,8 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Clock, UserCheck, Play, CheckCircle, Users, AlertCircle } from "lucide-react";
+import { Clock, UserCheck, Play, CheckCircle, Users, AlertCircle, Bell } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 interface TokenData {
   id: number;
@@ -45,13 +46,59 @@ export function PatientQueue() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: appointments = [], isLoading: appointmentsLoading } = useQuery<AppointmentData[]>({
+  const { data: appointments = [], isLoading: appointmentsLoading, refetch: refetchAppointments } = useQuery<AppointmentData[]>({
     queryKey: ["/api/appointments"],
   });
 
-  const { data: tokens = [], isLoading: tokensLoading } = useQuery<TokenData[]>({
+  const { data: tokens = [], isLoading: tokensLoading, refetch: refetchTokens } = useQuery<TokenData[]>({
     queryKey: ["/api/tokens"],
   });
+
+  // Real-time WebSocket connection for appointment and token updates
+  useEffect(() => {
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    const socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+      console.log('Patient Queue WebSocket connected');
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        
+        if (message.type === 'appointment_created') {
+          // Check if the appointment is for this doctor
+          const appointment = message.data.appointment;
+          if (appointment.doctorId === user?.id) {
+            refetchAppointments();
+            refetchTokens();
+            
+            // Show notification for new patient
+            toast({
+              title: "New Patient Appointment",
+              description: `${appointment.patient?.user?.fullName || 'A patient'} has booked an appointment`,
+              duration: 5000,
+            });
+          }
+        } else if (message.type === 'token_created') {
+          // Refresh tokens when new token is created
+          refetchTokens();
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
+
+    socket.onclose = () => {
+      console.log('Patient Queue WebSocket disconnected');
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, [user?.id, refetchAppointments, refetchTokens, toast]);
 
   // Filter appointments for current doctor
   const doctorAppointments = appointments.filter((apt: AppointmentData) => 
