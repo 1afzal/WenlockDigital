@@ -61,10 +61,11 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Forms */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+        {/* Left side - Forms */}
+        <div className="flex items-center justify-center p-6 lg:p-12 bg-white">
+          <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-medical-blue rounded-lg flex items-center justify-center">
@@ -185,7 +186,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input {...field} type="email" placeholder="Enter your email" />
+                              <Input {...field} value={field.value || ""} type="email" placeholder="Enter your email" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -199,7 +200,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Phone</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="Enter your phone number" />
+                              <Input {...field} value={field.value || ""} placeholder="Enter your phone number" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -272,35 +273,36 @@ export default function AuthPage() {
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
-      </div>
-
-      {/* Right side - Hero */}
-      <div className="flex-1 bg-gradient-to-br from-medical-blue to-health-green flex items-center justify-center p-8">
-        <div className="text-center text-white space-y-6 max-w-md">
-          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto">
-            <Hospital className="h-12 w-12" />
           </div>
-          <h2 className="text-4xl font-bold">Modern Healthcare Management</h2>
-          <p className="text-xl opacity-90">
-            Streamline patient care, manage appointments, track inventory, and ensure efficient hospital operations with our comprehensive management system.
-          </p>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="bg-white/10 rounded-lg p-3">
-              <h4 className="font-semibold">Real-time Updates</h4>
-              <p className="opacity-80">Live patient flow and status tracking</p>
+        </div>
+
+        {/* Right side - Hero */}
+        <div className="hidden lg:flex bg-gradient-to-br from-medical-blue to-health-green items-center justify-center p-6 lg:p-12">
+          <div className="text-center text-white space-y-6 max-w-md">
+            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+              <Hospital className="h-12 w-12" />
             </div>
-            <div className="bg-white/10 rounded-lg p-3">
-              <h4 className="font-semibold">Smart Scheduling</h4>
-              <p className="opacity-80">Automated appointment and OT management</p>
-            </div>
-            <div className="bg-white/10 rounded-lg p-3">
-              <h4 className="font-semibold">Digital Prescriptions</h4>
-              <p className="opacity-80">Paperless prescription workflow</p>
-            </div>
-            <div className="bg-white/10 rounded-lg p-3">
-              <h4 className="font-semibold">Emergency Alerts</h4>
-              <p className="opacity-80">Instant hospital-wide notifications</p>
+            <h2 className="text-3xl lg:text-4xl font-bold">Modern Healthcare Management</h2>
+            <p className="text-lg lg:text-xl opacity-90">
+              Streamline patient care, manage appointments, track inventory, and ensure efficient hospital operations with our comprehensive management system.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+              <div className="bg-white/10 rounded-lg p-3">
+                <h4 className="font-semibold">Real-time Updates</h4>
+                <p className="opacity-80">Live patient flow and status tracking</p>
+              </div>
+              <div className="bg-white/10 rounded-lg p-3">
+                <h4 className="font-semibold">Smart Scheduling</h4>
+                <p className="opacity-80">Automated appointment and OT management</p>
+              </div>
+              <div className="bg-white/10 rounded-lg p-3">
+                <h4 className="font-semibold">Digital Prescriptions</h4>
+                <p className="opacity-80">Paperless prescription workflow</p>
+              </div>
+              <div className="bg-white/10 rounded-lg p-3">
+                <h4 className="font-semibold">Emergency Alerts</h4>
+                <p className="opacity-80">Instant hospital-wide notifications</p>
+              </div>
             </div>
           </div>
         </div>
