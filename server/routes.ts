@@ -482,8 +482,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const validatedData = insertPrescriptionSchema.parse(req.body);
       const prescription = await storage.createPrescription(validatedData);
+      
+      // Send real-time notification to pharmacy staff
+      wss.clients.forEach((client: WebSocket) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({
+            type: 'prescription_created',
+            data: prescription,
+            timestamp: new Date().toISOString()
+          }));
+        }
+      });
+      
       res.status(201).json(prescription);
     } catch (error) {
+      console.error('Prescription creation error:', error);
       res.status(400).json({ message: "Invalid prescription data" });
     }
   });

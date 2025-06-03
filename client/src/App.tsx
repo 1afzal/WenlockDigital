@@ -11,7 +11,7 @@ import AdminDashboard from "@/pages/admin-dashboard-fixed";
 import DoctorDashboard from "@/pages/doctor-dashboard-fixed";
 import NurseDashboard from "@/pages/nurse-dashboard";
 import PatientDashboard from "@/pages/patient-dashboard-fixed";
-import PharmacyDashboard from "@/pages/pharmacy-dashboard";
+import PharmacyDashboard from "@/pages/pharmacy-dashboard-fixed";
 
 function RoleBasedDashboard() {
   const { user, isLoading } = useAuth();
