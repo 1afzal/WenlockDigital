@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/use-auth";
 import { AppointmentBooking } from "@/components/dashboard/patient/appointment-booking-fixed";
-import { Calendar, Clock, FileText, Heart, AlertCircle, Phone, MapPin, User } from "lucide-react";
+import { Calendar, Clock, FileText, Heart, AlertCircle, Phone, MapPin, User, LogOut } from "lucide-react";
 import { format } from "date-fns";
 
 interface PatientAppointment {
@@ -28,7 +28,7 @@ interface PatientPrescription {
 }
 
 export default function PatientDashboard() {
-  const { user } = useAuth();
+  const { user, logoutMutation } = useAuth();
 
   const { data: patientAppointments = [] } = useQuery<PatientAppointment[]>({
     queryKey: ["/api/patients/my-appointments"],
@@ -70,11 +70,23 @@ export default function PatientDashboard() {
               </h1>
               <p className="text-gray-600 mt-1">Manage your health journey with ease</p>
             </div>
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <div className="flex items-center gap-1">
-                <User className="h-4 w-4" />
-                Patient ID: #P{user?.id?.toString().padStart(4, '0')}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 text-sm text-gray-500">
+                <div className="flex items-center gap-1">
+                  <User className="h-4 w-4" />
+                  Patient ID: #P{user?.id?.toString().padStart(4, '0')}
+                </div>
               </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => logoutMutation.mutate()}
+                disabled={logoutMutation.isPending}
+                className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
+              </Button>
             </div>
           </div>
         </div>
