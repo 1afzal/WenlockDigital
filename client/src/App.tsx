@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
-import AdminDashboard from "@/pages/admin-dashboard";
+import AdminDashboard from "@/pages/admin-dashboard-fixed";
 import DoctorDashboard from "@/pages/doctor-dashboard-fixed";
 import NurseDashboard from "@/pages/nurse-dashboard";
 import PatientDashboard from "@/pages/patient-dashboard-fixed";
