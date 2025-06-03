@@ -342,20 +342,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Authentication required" });
       }
       
-      const validatedData = insertAppointmentSchema.parse(req.body);
+      // Parse and validate the appointment date
+      const appointmentData = {
+        ...req.body,
+        appointmentDate: new Date(req.body.appointmentDate),
+        status: req.body.status || 'scheduled'
+      };
+      
+      const validatedData = insertAppointmentSchema.parse(appointmentData);
       const appointment = await storage.createAppointment(validatedData);
       
       // Create corresponding token
-      const tokenNumber = `${req.body.departmentCode || 'T'}-${Date.now().toString().slice(-4)}`;
+      const tokenNumber = req.body.tokenNumber || `${req.body.departmentCode || 'T'}-${Date.now().toString().slice(-4)}`;
       await storage.createToken({
         appointmentId: appointment.id,
         tokenNumber,
-        departmentId: appointment.departmentId
+        departmentId: appointment.departmentId,
+        status: 'waiting'
       });
       
       res.status(201).json(appointment);
     } catch (error) {
-      res.status(400).json({ message: "Invalid appointment data" });
+      console.error('Appointment creation error:', error);
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(400).json({ message: "Invalid appointment data" });
+      }
     }
   });
 
