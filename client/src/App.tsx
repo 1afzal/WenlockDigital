@@ -10,7 +10,7 @@ import AuthPage from "@/pages/auth-page";
 import AdminDashboard from "@/pages/admin-dashboard";
 import DoctorDashboard from "@/pages/doctor-dashboard";
 import NurseDashboard from "@/pages/nurse-dashboard";
-import PatientDashboard from "@/pages/patient-dashboard";
+import PatientDashboard from "@/pages/patient-dashboard-fixed";
 import PharmacyDashboard from "@/pages/pharmacy-dashboard";
 
 function RoleBasedDashboard() {
