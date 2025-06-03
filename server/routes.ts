@@ -361,13 +361,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: 'waiting'
       });
       
+      // Get full appointment data with related information for WebSocket notification
+      const fullAppointments = await storage.getAppointments();
+      const newAppointmentWithDetails = fullAppointments.find(apt => apt.id === appointment.id);
+      
       // Send real-time notifications to all connected clients
+      console.log('Sending WebSocket notification for new appointment:', newAppointmentWithDetails);
       wss.clients.forEach((client: WebSocket) => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({
             type: 'appointment_created',
             data: {
-              appointment,
+              appointment: newAppointmentWithDetails,
               token,
               tokenNumber
             },

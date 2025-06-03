@@ -67,24 +67,31 @@ export function PatientQueue() {
     socket.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
+        console.log('Doctor dashboard received WebSocket message:', message);
         
         if (message.type === 'appointment_created') {
+          console.log('Processing appointment_created message for doctor:', user?.id);
+          
+          // Invalidate and refetch data immediately
+          queryClient.invalidateQueries({ queryKey: ["/api/appointments"] });
+          queryClient.invalidateQueries({ queryKey: ["/api/tokens"] });
+          
           // Check if the appointment is for this doctor
           const appointment = message.data.appointment;
-          if (appointment.doctorId === user?.id) {
-            refetchAppointments();
-            refetchTokens();
+          if (appointment && (appointment.doctorId === user?.id || appointment.doctor?.userId === user?.id)) {
+            console.log('Appointment is for current doctor, showing notification');
             
             // Show notification for new patient
             toast({
               title: "New Patient Appointment",
-              description: `${appointment.patient?.user?.fullName || 'A patient'} has booked an appointment`,
+              description: `${appointment.patient?.user?.fullName || 'A patient'} has booked an appointment for ${appointment.department?.name || 'your department'}`,
               duration: 5000,
             });
           }
         } else if (message.type === 'token_created') {
+          console.log('Processing token_created message');
           // Refresh tokens when new token is created
-          refetchTokens();
+          queryClient.invalidateQueries({ queryKey: ["/api/tokens"] });
         }
       } catch (error) {
         console.error('Error parsing WebSocket message:', error);
