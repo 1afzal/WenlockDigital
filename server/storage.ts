@@ -161,45 +161,6 @@ export class MemStorage implements IStorage {
       checkPeriod: 86400000,
     });
     
-    // Initialize with sample data
-    this.initializeSampleData();
-  }
-
-  private async initializeSampleData() {
-    // Create departments
-    const departments = [
-      { name: "Cardiology", description: "Heart and cardiovascular care" },
-      { name: "Emergency", description: "Emergency medical services" },
-      { name: "Orthopedics", description: "Bone and joint care" },
-      { name: "Pediatrics", description: "Children's healthcare" }
-    ];
-
-    for (const dept of departments) {
-      await this.createDepartment(dept);
-    }
-
-    // Create sample drugs
-    const drugs = [
-      { name: "Paracetamol", description: "Pain reliever", stock: 100, price: 5.50 },
-      { name: "Amoxicillin", description: "Antibiotic", stock: 75, price: 12.00 },
-      { name: "Ibuprofen", description: "Anti-inflammatory", stock: 50, price: 8.25 },
-      { name: "Metformin", description: "Diabetes medication", stock: 30, price: 15.75 }
-    ];
-
-    for (const drug of drugs) {
-      await this.createDrug(drug);
-    }
-
-    // Create operation theatres
-    const theatres = [
-      { name: "OT-1", status: "available", equipment: "General surgery equipment" },
-      { name: "OT-2", status: "occupied", equipment: "Cardiac surgery equipment" },
-      { name: "OT-3", status: "maintenance", equipment: "Orthopedic surgery equipment" }
-    ];
-
-    for (const theatre of theatres) {
-      await this.createOperationTheatre(theatre);
-    }
   }
 
   // User methods

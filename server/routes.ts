@@ -10,8 +10,125 @@ import {
   insertSurgerySchema, insertEmergencyAlertSchema
 } from "@shared/schema";
 
-export function registerRoutes(app: Express): Server {
+export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize hospital data first
+  await initializeHospitalData();
+  
   setupAuth(app);
+
+  async function initializeHospitalData() {
+    try {
+      const existingDepartments = await storage.getDepartments();
+      if (existingDepartments.length > 0) {
+        return; // Data already initialized
+      }
+
+      console.log('Initializing hospital system data...');
+
+      // Create departments
+      const cardiology = await storage.createDepartment({
+        name: 'Cardiology',
+        description: 'Heart and cardiovascular care'
+      });
+
+      const emergency = await storage.createDepartment({
+        name: 'Emergency',
+        description: 'Emergency medical services'
+      });
+
+      const orthopedics = await storage.createDepartment({
+        name: 'Orthopedics',
+        description: 'Bone and joint care'
+      });
+
+      const pediatrics = await storage.createDepartment({
+        name: 'Pediatrics',
+        description: 'Children healthcare'
+      });
+
+      // Create doctor users and profiles
+      const doctors = [
+        {
+          username: 'dr.smith',
+          fullName: 'Dr. John Smith',
+          email: 'dr.smith@wenlock.hospital',
+          specialization: 'Cardiologist',
+          departmentId: cardiology.id,
+          licenseNumber: 'DOC001'
+        },
+        {
+          username: 'dr.jones',
+          fullName: 'Dr. Sarah Jones', 
+          email: 'dr.jones@wenlock.hospital',
+          specialization: 'Emergency Medicine',
+          departmentId: emergency.id,
+          licenseNumber: 'DOC002'
+        },
+        {
+          username: 'dr.brown',
+          fullName: 'Dr. Michael Brown',
+          email: 'dr.brown@wenlock.hospital',
+          specialization: 'Orthopedic Surgeon',
+          departmentId: orthopedics.id,
+          licenseNumber: 'DOC003'
+        },
+        {
+          username: 'dr.davis',
+          fullName: 'Dr. Emily Davis',
+          email: 'dr.davis@wenlock.hospital',
+          specialization: 'Pediatrician',
+          departmentId: pediatrics.id,
+          licenseNumber: 'DOC004'
+        }
+      ];
+
+      for (const doctorData of doctors) {
+        const doctorUser = await storage.createUser({
+          username: doctorData.username,
+          password: 'demo123',
+          role: 'doctor',
+          fullName: doctorData.fullName,
+          email: doctorData.email,
+          phone: '+1234567890'
+        });
+
+        await storage.createDoctor({
+          userId: doctorUser.id,
+          departmentId: doctorData.departmentId,
+          specialization: doctorData.specialization,
+          licenseNumber: doctorData.licenseNumber,
+          type: 'specialist'
+        });
+      }
+
+      // Create sample drugs
+      const drugs = [
+        { name: "Paracetamol", genericName: "Acetaminophen", manufacturer: "PharmaCorp", quantity: 100, unitPrice: 5.50, minStockLevel: 20 },
+        { name: "Amoxicillin", genericName: "Amoxicillin Trihydrate", manufacturer: "MediLab", quantity: 75, unitPrice: 12.00, minStockLevel: 15 },
+        { name: "Ibuprofen", genericName: "Ibuprofen", manufacturer: "HealthPharma", quantity: 50, unitPrice: 8.25, minStockLevel: 10 },
+        { name: "Metformin", genericName: "Metformin HCl", manufacturer: "DiabetesCare", quantity: 30, unitPrice: 15.75, minStockLevel: 5 }
+      ];
+
+      for (const drug of drugs) {
+        await storage.createDrug(drug);
+      }
+
+      // Create operation theatres
+      const theatres = [
+        { name: "OT-1", isAvailable: true, currentSurgery: null, nextAvailable: null },
+        { name: "OT-2", isAvailable: false, currentSurgery: null, nextAvailable: new Date(Date.now() + 2 * 60 * 60 * 1000) },
+        { name: "OT-3", isAvailable: true, currentSurgery: null, nextAvailable: null }
+      ];
+
+      for (const theatre of theatres) {
+        await storage.createOperationTheatre(theatre);
+      }
+
+      console.log('Hospital system data initialized successfully');
+    } catch (error) {
+      console.error('Error initializing hospital data:', error);
+    }
+  }
 
   // Departments
   app.get("/api/departments", async (req, res) => {
