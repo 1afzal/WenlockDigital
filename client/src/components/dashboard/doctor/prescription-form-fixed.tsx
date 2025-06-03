@@ -95,30 +95,59 @@ export function PrescriptionForm() {
 
   const createPrescriptionMutation = useMutation({
     mutationFn: async (data: any) => {
+      // Ensure all required fields are present
+      if (!data.appointmentId || !data.patientId || !data.medications || data.medications.length === 0) {
+        throw new Error("Missing required prescription data");
+      }
+
       const prescriptionData = {
-        ...data,
+        appointmentId: parseInt(data.appointmentId),
+        patientId: parseInt(data.patientId),
         doctorId: user?.id,
         medications: JSON.stringify(data.medications),
+        instructions: data.instructions || '',
         status: 'pending'
       };
 
+      console.log('Creating prescription with data:', prescriptionData);
       const res = await apiRequest("POST", "/api/prescriptions", prescriptionData);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to create prescription');
+      }
+      
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('Prescription created successfully:', data);
+      
+      // Invalidate all prescription-related queries to trigger refetch
       queryClient.invalidateQueries({ queryKey: ["/api/prescriptions"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/prescriptions/pending"] });
+      
       toast({
-        title: "Prescription Created",
-        description: "Prescription has been sent to pharmacy for processing.",
+        title: "Prescription Created Successfully",
+        description: "Prescription has been sent to pharmacy and is now pending processing.",
+        duration: 5000,
       });
-      form.reset();
+      
+      // Reset form and medications
+      form.reset({
+        appointmentId: 0,
+        patientId: 0,
+        medications: [],
+        instructions: ""
+      });
       setMedications([{ name: "", dosage: "", frequency: "", duration: "", instructions: "" }]);
     },
     onError: (error: any) => {
+      console.error('Prescription creation error:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to create prescription",
+        title: "Failed to Create Prescription",
+        description: error.message || "Please check all fields and try again.",
         variant: "destructive",
+        duration: 5000,
       });
     },
   });
@@ -148,24 +177,39 @@ export function PrescriptionForm() {
   };
 
   const onSubmit = (data: PrescriptionFormData) => {
+    // Validate medications from state
     const validMedications = medications.filter(med => 
       med.name && med.dosage && med.frequency && med.duration
     );
 
     if (validMedications.length === 0) {
       toast({
-        title: "Error",
-        description: "Please add at least one complete medication.",
+        title: "Incomplete Prescription",
+        description: "Please add at least one complete medication with all required fields.",
         variant: "destructive",
       });
       return;
     }
 
+    // Validate appointment selection
+    if (!data.appointmentId || data.appointmentId === 0) {
+      toast({
+        title: "Patient Required",
+        description: "Please select a patient from today's appointments.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Prepare prescription data
     const prescriptionData = {
-      ...data,
-      medications: validMedications
+      appointmentId: data.appointmentId,
+      patientId: data.patientId,
+      medications: validMedications,
+      instructions: data.instructions || ''
     };
 
+    console.log('Submitting prescription:', prescriptionData);
     createPrescriptionMutation.mutate(prescriptionData);
   };
 
